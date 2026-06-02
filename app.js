@@ -565,11 +565,19 @@ function formatOrderQuantity(value) {
   return value && value.trim() ? value.trim() : 'not entered';
 }
 
+function getOrderQuantityIdentifier(itemName) {
+  if (Object.prototype.hasOwnProperty.call(orderQuantityIdentifiers, itemName)) {
+    return orderQuantityIdentifiers[itemName];
+  }
+
+  return itemName;
+}
+
 function formatOrderQuantityForItem(itemName, value) {
   const quantity = formatOrderQuantity(value);
-  const identifier = orderQuantityIdentifiers[itemName];
+  const identifier = getOrderQuantityIdentifier(itemName);
 
-  if (quantity === 'not entered' || identifier === undefined || identifier === '') {
+  if (quantity === 'not entered' || identifier === '') {
     return quantity;
   }
 
