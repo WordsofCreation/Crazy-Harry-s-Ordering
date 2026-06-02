@@ -16,7 +16,7 @@
     <div class="hero__content">
       <p class="eyebrow">CRAZY HARRY’S STEAKHOUSE</p>
       <h1>Ingredient Par &amp; Order List</h1>
-      <p class="tagline">Fast walk-in counts, clear order quantities, and one-tap vendor copy.</p>
+      <p class="tagline">Fast master par counts, dropdown quantities, and one-tap text message or email copy.</p>
     </div>
   </header>
 
@@ -48,10 +48,15 @@
 
       <div class="action-bar" aria-label="Inventory actions">
         <button type="button" id="clear-counts" class="button button--danger">Clear All Counts</button>
-        <button type="button" id="copy-order" class="button button--primary">Copy Order List</button>
+        <button type="button" id="create-text" class="button button--primary">Create Text Document</button>
+        <button type="button" id="copy-order" class="button button--secondary">Copy Text</button>
         <button type="button" id="export-csv" class="button button--secondary">Export CSV</button>
         <button type="button" id="save-progress" class="button button--secondary">Save Progress</button>
       </div>
+      <label class="field-label text-document-label" for="text-document">
+        Text Message / Email Document
+        <textarea id="text-document" class="touch-input text-document-output" rows="10" readonly placeholder="Tap Create Text Document after entering par, on hand, and order quantities."></textarea>
+      </label>
     </section>
 
     <section id="sections-container" class="sections-stack" aria-label="Ingredient par list"></section>
@@ -83,14 +88,17 @@
         <strong class="item-name"></strong>
         <small class="item-par-mobile"></small>
       </div>
-      <div class="item-cell par-cell"></div>
+      <label class="item-cell input-cell par-cell">
+        <span class="mobile-label">Par</span>
+        <select class="touch-input compact-input quantity-select par-input" aria-label="Par quantity"></select>
+      </label>
       <label class="item-cell input-cell">
         <span class="mobile-label">On Hand</span>
-        <input type="number" min="0" step="0.01" inputmode="decimal" class="touch-input compact-input on-hand-input" aria-label="On hand count">
+        <select class="touch-input compact-input quantity-select on-hand-input" aria-label="On hand count"></select>
       </label>
       <label class="item-cell input-cell">
         <span class="mobile-label">Order Qty</span>
-        <input type="text" class="touch-input compact-input order-qty-input" aria-label="Order quantity" placeholder="0">
+        <select class="touch-input compact-input quantity-select order-qty-input" aria-label="Order quantity"></select>
       </label>
       <label class="item-cell notes-cell">
         <span class="mobile-label">Vendor Notes</span>
