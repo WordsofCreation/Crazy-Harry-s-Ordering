@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15110f">
+  <meta name="description" content="Mobile ingredient par and ordering list for Crazy Harry’s Steakhouse.">
+  <title>Crazy Harry’s Steakhouse | Ingredient Par & Order List</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="eyebrow">CRAZY HARRY’S STEAKHOUSE</p>
+      <h1>Ingredient Par &amp; Order List</h1>
+      <p class="tagline">Fast walk-in counts, clear order quantities, and one-tap vendor copy.</p>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="clipboard-card setup-panel" aria-labelledby="setup-heading">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">Inventory Header</p>
+          <h2 id="setup-heading">Count Details</h2>
+        </div>
+        <span id="save-status" class="save-status" role="status" aria-live="polite">Ready</span>
+      </div>
+
+      <div class="field-grid">
+        <label class="field-label" for="inventory-date">
+          Date
+          <input type="date" id="inventory-date" class="touch-input" autocomplete="off">
+        </label>
+        <label class="field-label" for="checked-by">
+          Checked By
+          <input type="text" id="checked-by" class="touch-input" placeholder="Chef / manager name" autocomplete="name">
+        </label>
+      </div>
+
+      <label class="field-label search-label" for="ingredient-search">
+        Search / Filter Ingredients
+        <input type="search" id="ingredient-search" class="touch-input" placeholder="Type item or section name..." autocomplete="off">
+      </label>
+
+      <div class="action-bar" aria-label="Inventory actions">
+        <button type="button" id="clear-counts" class="button button--danger">Clear All Counts</button>
+        <button type="button" id="copy-order" class="button button--primary">Copy Order List</button>
+        <button type="button" id="export-csv" class="button button--secondary">Export CSV</button>
+        <button type="button" id="save-progress" class="button button--secondary">Save Progress</button>
+      </div>
+    </section>
+
+    <section id="sections-container" class="sections-stack" aria-label="Ingredient par list"></section>
+  </main>
+
+  <template id="section-template">
+    <article class="clipboard-card ingredient-section">
+      <button type="button" class="section-toggle" aria-expanded="true">
+        <span class="section-title"></span>
+        <span class="section-meta"></span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-content">
+        <div class="table-heading" aria-hidden="true">
+          <span>Item</span>
+          <span>Par</span>
+          <span>Count</span>
+          <span>Order</span>
+          <span>Notes</span>
+        </div>
+        <div class="items-list"></div>
+      </div>
+    </article>
+  </template>
+
+  <template id="item-template">
+    <div class="item-row">
+      <div class="item-cell item-name-cell">
+        <strong class="item-name"></strong>
+        <small class="item-par-mobile"></small>
+      </div>
+      <div class="item-cell par-cell"></div>
+      <label class="item-cell input-cell">
+        <span class="mobile-label">On Hand</span>
+        <input type="number" min="0" step="0.01" inputmode="decimal" class="touch-input compact-input on-hand-input" aria-label="On hand count">
+      </label>
+      <label class="item-cell input-cell">
+        <span class="mobile-label">Order Qty</span>
+        <input type="text" class="touch-input compact-input order-qty-input" aria-label="Order quantity" placeholder="0">
+      </label>
+      <label class="item-cell notes-cell">
+        <span class="mobile-label">Vendor Notes</span>
+        <textarea class="touch-input vendor-notes-input" aria-label="Vendor notes" rows="2" placeholder="Pack size, brand, vendor..."></textarea>
+      </label>
+      <label class="needs-ordering">
+        <input type="checkbox" class="needs-ordering-input">
+        <span>Needs Ordering</span>
+      </label>
+    </div>
+  </template>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

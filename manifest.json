@@ -1,0 +1,19 @@
+{
+  "name": "Crazy Harry’s Ingredient Par & Order List",
+  "short_name": "Harry’s Par",
+  "description": "Mobile ingredient par and order list for Crazy Harry’s Steakhouse.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3eadf",
+  "theme_color": "#15110f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
