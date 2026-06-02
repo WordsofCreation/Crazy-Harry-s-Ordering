@@ -46,6 +46,27 @@
         <input type="search" id="ingredient-search" class="touch-input" placeholder="Type item or section name..." autocomplete="off">
       </label>
 
+      <div class="item-manager" aria-labelledby="item-manager-heading">
+        <div class="item-manager__intro">
+          <div>
+            <p class="kicker">Item Manager</p>
+            <h3 id="item-manager-heading">Add or remove an item</h3>
+          </div>
+          <p>Choose a section, type the item name, and save it to your on-device list. Use Remove beside any item to take it off the count sheet.</p>
+        </div>
+        <form id="add-item-form" class="add-item-form">
+          <label class="field-label" for="item-section-select">
+            Section
+            <select id="item-section-select" class="touch-input quantity-select"></select>
+          </label>
+          <label class="field-label" for="new-item-name">
+            New Item Name
+            <input type="text" id="new-item-name" class="touch-input" placeholder="Example: Porterhouse steaks" autocomplete="off">
+          </label>
+          <button type="submit" class="button button--primary add-item-button">Add Item</button>
+        </form>
+      </div>
+
       <div class="action-bar" aria-label="Inventory actions">
         <button type="button" id="clear-counts" class="button button--danger">Clear All Counts</button>
         <button type="button" id="create-text" class="button button--primary">Create Text Document</button>
@@ -77,6 +98,7 @@
           <span>Count</span>
           <span>Order</span>
           <span>Notes</span>
+          <span>Remove</span>
         </div>
         <div class="items-list"></div>
       </div>
@@ -113,6 +135,7 @@
         <input type="checkbox" class="needs-ordering-input">
         <span>Needs Ordering</span>
       </label>
+      <button type="button" class="remove-item-button" aria-label="Remove item">Remove</button>
     </div>
   </template>
 

@@ -1,4 +1,5 @@
-const STORAGE_KEY = 'crazyHarryParOrderList:v1';
+const STORAGE_KEY = 'crazyHarryParOrderList:v2';
+const LEGACY_STORAGE_KEY = 'crazyHarryParOrderList:v1';
 
 const inventorySections = [
   {
@@ -174,7 +175,9 @@ const state = {
     date: '',
     checkedBy: ''
   },
-  items: {}
+  items: {},
+  customItems: [],
+  removedItems: []
 };
 
 const elements = {};
@@ -201,6 +204,64 @@ function defaultItemState() {
     vendorNotes: '',
     needsOrdering: false
   };
+}
+
+function normalizeItemName(value) {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function customItemId(sectionName, itemName) {
+  return `${itemKey(sectionName, itemName)}__custom`;
+}
+
+function sectionNames() {
+  return inventorySections.map((section) => section.name);
+}
+
+function getActiveSections() {
+  const removedKeys = new Set(state.removedItems || []);
+  const sectionsByName = new Map(
+    inventorySections.map((section) => [
+      section.name,
+      {
+        ...section,
+        items: section.items
+          .filter((item) => !removedKeys.has(itemKey(section.name, item.item)))
+          .map((item) => ({ ...item, isCustom: false }))
+      }
+    ])
+  );
+
+  (state.customItems || []).forEach((customItem) => {
+    if (!sectionsByName.has(customItem.section)) return;
+
+    const section = sectionsByName.get(customItem.section);
+    if (removedKeys.has(itemKey(customItem.section, customItem.item))) return;
+
+    section.items.push({
+      item: customItem.item,
+      isCustom: true,
+      customId: customItem.id
+    });
+  });
+
+  return Array.from(sectionsByName.values()).filter((section) => section.items.length > 0);
+}
+
+function itemExists(sectionName, itemName) {
+  const normalized = normalizeItemName(itemName).toLowerCase();
+  return getActiveSections().some((section) => (
+    section.name === sectionName
+    && section.items.some((item) => item.item.toLowerCase() === normalized)
+  ));
+}
+
+function baseItemExists(sectionName, itemName) {
+  const normalized = normalizeItemName(itemName).toLowerCase();
+  return inventorySections.some((section) => (
+    section.name === sectionName
+    && section.items.some((item) => item.item.toLowerCase() === normalized)
+  ));
 }
 
 function getItemState(key) {
@@ -252,7 +313,7 @@ function refreshGeneratedTextDocument() {
 }
 
 function loadState() {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!saved) {
     state.header.date = new Date().toISOString().slice(0, 10);
     return;
@@ -262,6 +323,8 @@ function loadState() {
     const parsed = JSON.parse(saved);
     state.header = { ...state.header, ...parsed.header };
     state.items = { ...state.items, ...parsed.items };
+    state.customItems = Array.isArray(parsed.customItems) ? parsed.customItems : [];
+    state.removedItems = Array.isArray(parsed.removedItems) ? parsed.removedItems : [];
   } catch (error) {
     console.warn('Could not load saved inventory progress.', error);
     state.header.date = new Date().toISOString().slice(0, 10);
@@ -302,7 +365,7 @@ function renderSections() {
   const sectionTemplate = document.querySelector('#section-template');
   const itemTemplate = document.querySelector('#item-template');
 
-  inventorySections.forEach((section) => {
+  getActiveSections().forEach((section) => {
     const sectionNode = sectionTemplate.content.firstElementChild.cloneNode(true);
     const toggle = sectionNode.querySelector('.section-toggle');
     const title = sectionNode.querySelector('.section-title');
@@ -332,11 +395,13 @@ function renderSections() {
       const orderPrint = itemNode.querySelector('.item-order-print');
       const vendorNotes = itemNode.querySelector('.vendor-notes-input');
       const needsOrdering = itemNode.querySelector('.needs-ordering-input');
+      const removeButton = itemNode.querySelector('.remove-item-button');
 
       itemNode.dataset.key = key;
       itemNode.dataset.section = section.name.toLowerCase();
       itemNode.dataset.item = item.item.toLowerCase();
       name.textContent = item.item;
+      removeButton.setAttribute('aria-label', `Remove ${item.item}`);
       populateQuantitySelect(par, values.par);
       populateQuantitySelect(onHand, values.onHand);
       populateQuantitySelect(orderQty, values.orderQty);
@@ -387,6 +452,8 @@ function renderSections() {
         refreshGeneratedTextDocument();
         scheduleSave();
       });
+
+      removeButton.addEventListener('click', () => removeItem(section.name, item));
 
       itemsList.append(itemNode);
     });
@@ -454,7 +521,7 @@ function formatOrderQuantity(value) {
 function buildTextDocument() {
   const lines = [];
 
-  inventorySections.forEach((section) => {
+  getActiveSections().forEach((section) => {
     section.items.forEach((item) => {
       const values = getItemState(itemKey(section.name, item.item));
       if (!values.needsOrdering) return;
@@ -524,7 +591,7 @@ function exportCsv() {
     ['Business', 'Date', 'Checked By', 'Section', 'Item', 'Par', 'On Hand', 'Order Qty', 'Needs Ordering', 'Vendor Notes']
   ];
 
-  inventorySections.forEach((section) => {
+  getActiveSections().forEach((section) => {
     section.items.forEach((item) => {
       const values = getItemState(itemKey(section.name, item.item));
       rows.push([
@@ -547,6 +614,78 @@ function exportCsv() {
 
   downloadFile(`crazy-harry-order-list-${fileDate}.csv`, csv, 'text/csv;charset=utf-8');
   showToast('CSV export downloaded.');
+}
+
+function populateSectionSelect() {
+  elements.itemSectionSelect.innerHTML = '';
+
+  sectionNames().forEach((sectionName) => {
+    const option = document.createElement('option');
+    option.value = sectionName;
+    option.textContent = sectionName;
+    elements.itemSectionSelect.append(option);
+  });
+}
+
+function addItem(event) {
+  event.preventDefault();
+
+  const section = elements.itemSectionSelect.value;
+  const itemName = normalizeItemName(elements.newItemName.value);
+
+  if (!itemName) {
+    showToast('Enter an item name before adding.');
+    elements.newItemName.focus();
+    return;
+  }
+
+  if (itemExists(section, itemName)) {
+    showToast('That item is already on this section.');
+    return;
+  }
+
+  const key = itemKey(section, itemName);
+  const restoringBaseItem = baseItemExists(section, itemName);
+
+  state.removedItems = (state.removedItems || []).filter((removedKey) => removedKey !== key);
+
+  if (!restoringBaseItem) {
+    state.customItems = [
+      ...(state.customItems || []),
+      {
+        id: customItemId(section, itemName),
+        section,
+        item: itemName
+      }
+    ];
+  }
+
+  elements.newItemName.value = '';
+  renderSections();
+  filterIngredients();
+  refreshGeneratedTextDocument();
+  saveState({ manual: true });
+  showToast(`${itemName} added to ${section}.`);
+}
+
+function removeItem(sectionName, item) {
+  const confirmed = window.confirm(`Remove ${item.item} from ${sectionName}? Saved counts for this item will be cleared.`);
+  if (!confirmed) return;
+
+  const key = itemKey(sectionName, item.item);
+  delete state.items[key];
+
+  if (item.isCustom) {
+    state.customItems = (state.customItems || []).filter((customItem) => customItem.id !== item.customId);
+  } else if (!state.removedItems.includes(key)) {
+    state.removedItems.push(key);
+  }
+
+  renderSections();
+  filterIngredients();
+  refreshGeneratedTextDocument();
+  saveState({ manual: true });
+  showToast(`${item.item} removed.`);
 }
 
 function filterIngredients() {
@@ -603,6 +742,9 @@ function bindElements() {
   elements.saveProgress = document.querySelector('#save-progress');
   elements.saveStatus = document.querySelector('#save-status');
   elements.textDocument = document.querySelector('#text-document');
+  elements.itemSectionSelect = document.querySelector('#item-section-select');
+  elements.newItemName = document.querySelector('#new-item-name');
+  elements.addItemForm = document.querySelector('#add-item-form');
   elements.toast = document.querySelector('#toast');
 }
 
@@ -610,10 +752,12 @@ function init() {
   bindElements();
   loadState();
   syncHeaderInputs();
+  populateSectionSelect();
   renderSections();
   registerServiceWorker();
 
   elements.search.addEventListener('input', filterIngredients);
+  elements.addItemForm.addEventListener('submit', addItem);
   elements.clearCounts.addEventListener('click', clearAllCounts);
   elements.createText.addEventListener('click', () => updateTextDocument({ announce: true }));
   elements.copyOrder.addEventListener('click', copyOrderList);
