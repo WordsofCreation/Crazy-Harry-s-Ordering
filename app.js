@@ -170,6 +170,47 @@ const quantityOptions = [
   'As needed'
 ];
 
+const orderQuantityIdentifiers = {
+  'Sourdough loaves': '',
+  'Bread for toast points': '',
+  'Filet mignon, 6 oz portions': '',
+  'Filet mignon, 10 oz portions': '',
+  'Ribeye, 16 oz portions': '',
+  'Prosciutto, sliced': '',
+  'Heavy cream': 'gallons',
+  'Milk': 'gallon',
+  'Romaine hearts': 'large heads',
+  'Iceberg lettuce': 'heads',
+  'Spring mix': 'plastic containers',
+  'Glory cherry tomatoes': 'small containers (multicolor ok)',
+  'Radish': 'bunch',
+  'Fresh basil': 'bunches',
+  'Fresh chives': 'bunches',
+  'Italian parsley': 'bunches',
+  'Red onions': 'lb',
+  'Green onions': 'bunch',
+  'Shallots': 'each',
+  'Peeled garlic / minced garlic': 'large container',
+  'Carrots': 'Lbs',
+  'Brussels sprouts': 'Lbs',
+  'Yukon Gold potatoes': 'Lbs',
+  'Russet potatoes': 'ea',
+  'Zucchini': 'ea',
+  'Bananas': 'bunch',
+  'Fresh blackberries': 'small containers',
+  'Cayenne pepper': 'small container',
+  'Old Bay seasoning': '',
+  'Star anise': 'bottle or container',
+  'Cinnamon sticks': 'bottle or container',
+  'Vanilla': 'container fresh',
+  'Fry oil / beef tallow': 'jars',
+  'White wine vinegar': 'gallon',
+  'White wine': 'bottles',
+  'Brandy': 'bottle',
+  'Rum': 'bottle',
+  'Lemon juice': 'bottle'
+};
+
 const state = {
   header: {
     date: '',
@@ -518,6 +559,17 @@ function formatOrderQuantity(value) {
   return value && value.trim() ? value.trim() : 'not entered';
 }
 
+function formatOrderQuantityForItem(itemName, value) {
+  const quantity = formatOrderQuantity(value);
+  const identifier = orderQuantityIdentifiers[itemName];
+
+  if (quantity === 'not entered' || identifier === undefined || identifier === '') {
+    return quantity;
+  }
+
+  return `${quantity} ${identifier}`;
+}
+
 function buildTextDocument() {
   const lines = [];
 
@@ -526,7 +578,7 @@ function buildTextDocument() {
       const values = getItemState(itemKey(section.name, item.item));
       if (!values.needsOrdering) return;
 
-      lines.push(`- ${item.item} Order: ${formatOrderQuantity(values.orderQty)}`);
+      lines.push(`- ${item.item} Order: ${formatOrderQuantityForItem(item.item, values.orderQty)}`);
     });
   });
 
@@ -602,7 +654,7 @@ function exportCsv() {
         item.item,
         values.par,
         values.onHand,
-        values.orderQty,
+        formatOrderQuantityForItem(item.item, values.orderQty),
         values.needsOrdering ? 'Yes' : 'No',
         values.vendorNotes
       ]);
