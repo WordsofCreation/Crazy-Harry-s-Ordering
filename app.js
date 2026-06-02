@@ -232,6 +232,21 @@ function populateQuantitySelect(select, selectedValue) {
   select.value = selectedValue || '';
 }
 
+function selectedValueText(label, value, emptyText) {
+  return value && value.trim() ? `${label}: ${value.trim()}` : emptyText;
+}
+
+function updateSelectedValue(labelNode, label, value, emptyText) {
+  labelNode.textContent = selectedValueText(label, value, emptyText);
+  labelNode.classList.toggle('has-selection', Boolean(value && value.trim()));
+}
+
+function refreshGeneratedTextDocument() {
+  if (elements.textDocument.value.trim()) {
+    elements.textDocument.value = buildTextDocument();
+  }
+}
+
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (!saved) {
@@ -305,8 +320,11 @@ function renderSections() {
       const name = itemNode.querySelector('.item-name');
       const par = itemNode.querySelector('.par-input');
       const parMobile = itemNode.querySelector('.item-par-mobile');
+      const parSelected = itemNode.querySelector('.par-selected');
       const onHand = itemNode.querySelector('.on-hand-input');
+      const onHandSelected = itemNode.querySelector('.on-hand-selected');
       const orderQty = itemNode.querySelector('.order-qty-input');
+      const orderQtySelected = itemNode.querySelector('.order-qty-selected');
       const vendorNotes = itemNode.querySelector('.vendor-notes-input');
       const needsOrdering = itemNode.querySelector('.needs-ordering-input');
 
@@ -317,38 +335,49 @@ function renderSections() {
       populateQuantitySelect(par, values.par);
       populateQuantitySelect(onHand, values.onHand);
       populateQuantitySelect(orderQty, values.orderQty);
-      parMobile.textContent = values.par ? `Par: ${values.par}` : 'Par: Select';
+      parMobile.textContent = selectedValueText('Par', values.par, 'Par: Select');
+      updateSelectedValue(parSelected, 'Par selected', values.par, 'No par selected');
+      updateSelectedValue(onHandSelected, 'Count selected', values.onHand, 'No count selected');
+      updateSelectedValue(orderQtySelected, 'Order selected', values.orderQty, 'No order selected');
       vendorNotes.value = values.vendorNotes;
       needsOrdering.checked = values.needsOrdering;
       updateNeededClass(itemNode, values);
 
       par.addEventListener('change', () => {
         values.par = par.value;
-        parMobile.textContent = values.par ? `Par: ${values.par}` : 'Par: Select';
+        parMobile.textContent = selectedValueText('Par', values.par, 'Par: Select');
+        updateSelectedValue(parSelected, 'Par selected', values.par, 'No par selected');
         updateNeededClass(itemNode, values);
+        refreshGeneratedTextDocument();
         scheduleSave();
       });
 
       onHand.addEventListener('change', () => {
         values.onHand = onHand.value;
+        updateSelectedValue(onHandSelected, 'Count selected', values.onHand, 'No count selected');
         updateNeededClass(itemNode, values);
+        refreshGeneratedTextDocument();
         scheduleSave();
       });
 
       orderQty.addEventListener('change', () => {
         values.orderQty = orderQty.value;
+        updateSelectedValue(orderQtySelected, 'Order selected', values.orderQty, 'No order selected');
         updateNeededClass(itemNode, values);
+        refreshGeneratedTextDocument();
         scheduleSave();
       });
 
       vendorNotes.addEventListener('input', () => {
         values.vendorNotes = vendorNotes.value;
+        refreshGeneratedTextDocument();
         scheduleSave();
       });
 
       needsOrdering.addEventListener('change', () => {
         values.needsOrdering = needsOrdering.checked;
         updateNeededClass(itemNode, values);
+        refreshGeneratedTextDocument();
         scheduleSave();
       });
 
@@ -392,8 +421,14 @@ function clearAllCounts() {
   document.querySelectorAll('.item-row').forEach((row) => {
     row.querySelector('.par-input').value = '';
     row.querySelector('.item-par-mobile').textContent = 'Par: Select';
+    row.querySelector('.par-selected').textContent = 'No par selected';
+    row.querySelector('.par-selected').classList.remove('has-selection');
     row.querySelector('.on-hand-input').value = '';
+    row.querySelector('.on-hand-selected').textContent = 'No count selected';
+    row.querySelector('.on-hand-selected').classList.remove('has-selection');
     row.querySelector('.order-qty-input').value = '';
+    row.querySelector('.order-qty-selected').textContent = 'No order selected';
+    row.querySelector('.order-qty-selected').classList.remove('has-selection');
     row.querySelector('.vendor-notes-input').value = '';
     row.querySelector('.needs-ordering-input').checked = false;
     row.classList.remove('is-needed', 'is-filled');
@@ -421,7 +456,7 @@ function formatValue(value) {
 function buildTextDocument() {
   const lines = [
     'CRAZY HARRY’S STEAKHOUSE',
-    'MASTER INGREDIENT PAR LIST ONLY',
+    'INGREDIENT PAR & ORDER LIST',
     `Date: ${state.header.date || 'Not entered'}`,
     `Checked By: ${state.header.checkedBy || 'Not entered'}`,
     ''
@@ -493,6 +528,28 @@ function csvEscape(value) {
   return `"${text.replace(/"/g, '""')}"`;
 }
 
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportText() {
+  const text = buildTextDocument();
+  const fileDate = state.header.date || new Date().toISOString().slice(0, 10);
+
+  elements.textDocument.value = text;
+  downloadFile(`crazy-harry-order-list-${fileDate}.txt`, text, 'text/plain;charset=utf-8');
+  showToast('Text export downloaded.');
+}
+
 function exportCsv() {
   const rows = [
     ['Business', 'Date', 'Checked By', 'Section', 'Item', 'Par', 'On Hand', 'Order Qty', 'Needs Ordering', 'Vendor Notes']
@@ -517,17 +574,9 @@ function exportCsv() {
   });
 
   const csv = rows.map((row) => row.map(csvEscape).join(',')).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
   const fileDate = state.header.date || new Date().toISOString().slice(0, 10);
 
-  link.href = url;
-  link.download = `crazy-harry-order-list-${fileDate}.csv`;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
+  downloadFile(`crazy-harry-order-list-${fileDate}.csv`, csv, 'text/csv;charset=utf-8');
   showToast('CSV export downloaded.');
 }
 
@@ -580,6 +629,7 @@ function bindElements() {
   elements.clearCounts = document.querySelector('#clear-counts');
   elements.createText = document.querySelector('#create-text');
   elements.copyOrder = document.querySelector('#copy-order');
+  elements.exportText = document.querySelector('#export-text');
   elements.exportCsv = document.querySelector('#export-csv');
   elements.saveProgress = document.querySelector('#save-progress');
   elements.saveStatus = document.querySelector('#save-status');
@@ -598,6 +648,7 @@ function init() {
   elements.clearCounts.addEventListener('click', clearAllCounts);
   elements.createText.addEventListener('click', () => updateTextDocument({ announce: true }));
   elements.copyOrder.addEventListener('click', copyOrderList);
+  elements.exportText.addEventListener('click', exportText);
   elements.exportCsv.addEventListener('click', exportCsv);
   elements.saveProgress.addEventListener('click', () => saveState({ manual: true }));
 }
