@@ -9,7 +9,7 @@ A mobile-first Progressive Web App (PWA) for Crazy Harry’s Steakhouse. Chefs c
 - Dropdown `Par`, `On Hand`, and `Order Qty` fields for every ingredient.
 - Optional `Vendor Notes` field and `Needs Ordering` checkbox for quick item selection.
 - Search/filter box for ingredients or section names.
-- `Create Text Document` builds a copy-ready text message/email draft with only checked `Needs Ordering` items and their order quantities, and `Copy Text` copies it to the clipboard.
+- `Create Text Document` builds a copy-ready text message/email draft with only checked `Needs Ordering` items and their order quantities, keeps that draft updated as order selections change, and `Copy Text` copies it to the clipboard.
 - `Export CSV` downloads the full worksheet.
 - `Save Progress` plus autosave to `localStorage` so counts remain on the same phone/browser.
 - Installable PWA with `manifest.json` and `service-worker.js` for home-screen use and offline loading after the first visit.

@@ -224,6 +224,7 @@ const state = {
 const elements = {};
 let saveTimer;
 let toastTimer;
+let textDocumentIsLive = false;
 
 function slugify(value) {
   return value
@@ -348,9 +349,9 @@ function updateSelectedValue(labelNode, label, value, emptyText) {
 }
 
 function refreshGeneratedTextDocument() {
-  if (elements.textDocument.value.trim()) {
-    elements.textDocument.value = buildTextDocument();
-  }
+  if (!textDocumentIsLive) return;
+
+  elements.textDocument.value = buildTextDocument();
 }
 
 function loadState() {
@@ -556,7 +557,7 @@ function clearAllCounts() {
   });
 
   saveState({ manual: true });
-  elements.textDocument.value = '';
+  refreshGeneratedTextDocument();
   showToast('Counts and order selections cleared. Pars and vendor notes were kept.');
 }
 
@@ -595,14 +596,16 @@ function buildTextDocument() {
 }
 
 function updateTextDocument({ announce = false } = {}) {
+  textDocumentIsLive = true;
   elements.textDocument.value = buildTextDocument();
   if (announce) {
-    showToast('Text document created below.');
+    showToast('Text document created below. It will update as you make changes.');
   }
 }
 
 async function copyOrderList() {
   const orderText = buildTextDocument();
+  textDocumentIsLive = true;
   elements.textDocument.value = orderText;
 
   try {
@@ -638,6 +641,7 @@ function exportText() {
   const text = buildTextDocument();
   const fileDate = state.header.date || new Date().toISOString().slice(0, 10);
 
+  textDocumentIsLive = true;
   elements.textDocument.value = text;
   downloadFile(`crazy-harry-order-list-${fileDate}.txt`, text, 'text/plain;charset=utf-8');
   showToast('Text export downloaded.');
