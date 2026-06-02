@@ -236,6 +236,10 @@ function selectedValueText(label, value, emptyText) {
   return value && value.trim() ? `${label}: ${value.trim()}` : emptyText;
 }
 
+function orderPrintText(value) {
+  return `Order: ${formatOrderQuantity(value)}`;
+}
+
 function updateSelectedValue(labelNode, label, value, emptyText) {
   labelNode.textContent = selectedValueText(label, value, emptyText);
   labelNode.classList.toggle('has-selection', Boolean(value && value.trim()));
@@ -325,6 +329,7 @@ function renderSections() {
       const onHandSelected = itemNode.querySelector('.on-hand-selected');
       const orderQty = itemNode.querySelector('.order-qty-input');
       const orderQtySelected = itemNode.querySelector('.order-qty-selected');
+      const orderPrint = itemNode.querySelector('.item-order-print');
       const vendorNotes = itemNode.querySelector('.vendor-notes-input');
       const needsOrdering = itemNode.querySelector('.needs-ordering-input');
 
@@ -339,6 +344,7 @@ function renderSections() {
       updateSelectedValue(parSelected, 'Par selected', values.par, 'No par selected');
       updateSelectedValue(onHandSelected, 'Count selected', values.onHand, 'No count selected');
       updateSelectedValue(orderQtySelected, 'Order selected', values.orderQty, 'No order selected');
+      orderPrint.textContent = orderPrintText(values.orderQty);
       vendorNotes.value = values.vendorNotes;
       needsOrdering.checked = values.needsOrdering;
       updateNeededClass(itemNode, values);
@@ -363,6 +369,7 @@ function renderSections() {
       orderQty.addEventListener('change', () => {
         values.orderQty = orderQty.value;
         updateSelectedValue(orderQtySelected, 'Order selected', values.orderQty, 'No order selected');
+        orderPrint.textContent = orderPrintText(values.orderQty);
         updateNeededClass(itemNode, values);
         refreshGeneratedTextDocument();
         scheduleSave();
@@ -429,6 +436,7 @@ function clearAllCounts() {
     row.querySelector('.order-qty-input').value = '';
     row.querySelector('.order-qty-selected').textContent = 'No order selected';
     row.querySelector('.order-qty-selected').classList.remove('has-selection');
+    row.querySelector('.item-order-print').textContent = orderPrintText('');
     row.querySelector('.vendor-notes-input').value = '';
     row.querySelector('.needs-ordering-input').checked = false;
     row.classList.remove('is-needed', 'is-filled');
@@ -451,7 +459,7 @@ function buildTextDocument() {
       const values = getItemState(itemKey(section.name, item.item));
       if (!values.needsOrdering) return;
 
-      lines.push(`- ${item.item}: ${formatOrderQuantity(values.orderQty)}`);
+      lines.push(`- ${item.item} Order: ${formatOrderQuantity(values.orderQty)}`);
     });
   });
 

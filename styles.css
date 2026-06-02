@@ -315,6 +315,9 @@ h2 {
   text-transform: uppercase;
 }
 
+.item-order-print {
+  display: none;
+}
 
 .input-cell,
 .notes-cell {
@@ -462,18 +465,69 @@ h2 {
   }
 
   .hero,
-  .action-bar,
-  .search-label,
+  .setup-panel,
+  .table-heading,
+  .item-row:not(.is-needed),
+  .par-cell,
+  .input-cell,
+  .notes-cell,
+  .needs-ordering,
+  .section-meta,
   .section-toggle .chevron,
   .toast {
     display: none;
   }
 
-  .app-shell {
+  .app-shell,
+  .section-content {
     padding: 0;
   }
 
-  .clipboard-card {
+  .sections-stack {
+    gap: 0;
+    margin: 0;
+  }
+
+  .clipboard-card,
+  .item-row {
+    border: 0;
     box-shadow: none;
+  }
+
+  .ingredient-section {
+    break-inside: avoid;
+  }
+
+  .section-toggle {
+    background: transparent;
+    color: #000;
+    min-height: auto;
+    padding: 0.25rem 0 0.1rem;
+  }
+
+  .item-row {
+    display: block;
+    padding: 0.08rem 0;
+  }
+
+  .item-name-cell strong,
+  .item-order-print {
+    color: #000;
+    display: inline;
+    font-size: 12pt;
+    font-weight: 700;
+    text-transform: none;
+  }
+
+  .item-name-cell strong::before {
+    content: "- ";
+  }
+
+  .item-name-cell strong::after {
+    content: " ";
+  }
+
+  .item-par-mobile {
+    display: none;
   }
 }
