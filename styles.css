@@ -56,6 +56,8 @@ button {
 }
 
 .hero__content {
+  display: grid;
+  gap: 1rem;
   margin: 0 auto;
   max-width: 1120px;
 }
@@ -203,10 +205,8 @@ h2 {
   padding: 0.85rem;
 }
 
-.item-manager h3 {
-  font-size: 1.15rem;
-  line-height: 1.15;
-  margin: 0;
+.item-manager h2 {
+  color: var(--charcoal);
 }
 
 .item-manager__intro {
@@ -219,6 +219,11 @@ h2 {
   font-size: 0.9rem;
   font-weight: 700;
   margin: 0;
+}
+
+.hero__item-manager {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  margin-top: 0.35rem;
 }
 
 .add-item-form {
