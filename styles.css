@@ -37,6 +37,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -164,6 +165,29 @@ h2 {
   box-shadow: 0 0 0 4px rgba(214, 162, 75, 0.22);
 }
 
+.quantity-select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--charcoal-soft) 50%),
+    linear-gradient(135deg, var(--charcoal-soft) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) 50%,
+    calc(100% - 0.8rem) 50%;
+  background-repeat: no-repeat;
+  background-size: 0.38rem 0.38rem;
+  padding-right: 2.2rem;
+}
+
+.text-document-label {
+  margin-top: 1rem;
+}
+
+.text-document-output {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  min-height: 12rem;
+  resize: vertical;
+  white-space: pre;
+}
+
 .action-bar {
   display: grid;
   gap: 0.65rem;
@@ -269,6 +293,10 @@ h2 {
   padding: 0.8rem;
 }
 
+.item-row.is-filled {
+  border-left-color: var(--green);
+}
+
 .item-row.is-needed {
   border-left-color: var(--red);
   box-shadow: 0 0 0 3px rgba(141, 47, 36, 0.11);
@@ -287,9 +315,6 @@ h2 {
   text-transform: uppercase;
 }
 
-.par-cell {
-  display: none;
-}
 
 .input-cell,
 .notes-cell {
@@ -368,7 +393,7 @@ h2 {
   }
 
   .action-bar {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 
   .table-heading,
@@ -400,9 +425,8 @@ h2 {
   }
 
   .par-cell {
-    display: block;
+    display: grid;
     font-weight: 800;
-    padding-top: 0.7rem;
   }
 
   .needs-ordering {

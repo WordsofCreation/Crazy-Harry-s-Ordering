@@ -1,15 +1,15 @@
 # Crazy Harry’s Ingredient Par & Order List
 
-A mobile-first Progressive Web App (PWA) for Crazy Harry’s Steakhouse. Chefs can fill out ingredient inventory counts, mark items that need ordering, copy a clean vendor order list, and export the full par sheet as CSV.
+A mobile-first Progressive Web App (PWA) for Crazy Harry’s Steakhouse. Chefs can fill out the current master ingredient par list with dropdown quantities, mark items that need ordering, create a copy-ready text document for a boss, and export the full par sheet as CSV.
 
 ## Features
 
 - Phone-friendly layout with large touch targets.
-- Collapsible sections for bakery, protein, dairy, produce, pantry, condiments, dessert, supplies, and notes.
-- Editable `On Hand`, `Order Qty`, and `Vendor Notes` fields for every ingredient.
-- `Needs Ordering` checkbox for quick item selection.
+- Collapsible sections matching the current master par list: bakery, protein, dairy/eggs, produce, pantry, oils/vinegars/liquids/alcohol, and frozen.
+- Dropdown `Par`, `On Hand`, and `Order Qty` fields for every ingredient.
+- Optional `Vendor Notes` field and `Needs Ordering` checkbox for quick item selection.
 - Search/filter box for ingredients or section names.
-- `Copy Order List` creates a clean text list containing only items with an order quantity or `Needs Ordering` checked.
+- `Create Text Document` builds a copy-ready text message/email draft from filled rows, and `Copy Text` copies it to the clipboard.
 - `Export CSV` downloads the full worksheet.
 - `Save Progress` plus autosave to `localStorage` so counts remain on the same phone/browser.
 - Installable PWA with `manifest.json` and `service-worker.js` for home-screen use and offline loading after the first visit.
@@ -54,4 +54,4 @@ README.md           # Setup and usage instructions
 
 - Progress is stored in the browser on the current device. Clearing browser site data will clear saved counts.
 - Use **Clear All Counts** after confirming an order or when starting a fresh inventory cycle.
-- The copied order list only includes items with an `Order Qty` entered or `Needs Ordering` checked.
+- The text document includes rows where at least one quantity, note, or `Needs Ordering` checkbox has been filled in.

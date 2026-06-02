@@ -4,115 +4,169 @@ const inventorySections = [
   {
     name: 'Bread / Bakery',
     items: [
-      { item: 'Dinner rolls', par: '8 dozen' },
-      { item: 'Sourdough loaves', par: '10 loaves' },
-      { item: 'Burger buns', par: '6 dozen' },
-      { item: 'Croutons', par: '2 cases' },
-      { item: 'Panko bread crumbs', par: '3 bags' }
+      'Sourdough loaves',
+      'Bread for toast points'
     ]
   },
   {
     name: 'Meat / Seafood / Protein',
     items: [
-      { item: 'Ribeye steaks', par: '48 each' },
-      { item: 'Filet mignon', par: '36 each' },
-      { item: 'New York strip steaks', par: '48 each' },
-      { item: 'Prime rib roasts', par: '4 roasts' },
-      { item: 'Ground beef', par: '40 lb' },
-      { item: 'Chicken breasts', par: '30 lb' },
-      { item: 'Salmon fillets', par: '24 each' },
-      { item: 'Shrimp', par: '20 lb' },
-      { item: 'Bacon', par: '15 lb' }
+      'Dungeness crab meat',
+      'Filet mignon, 6 oz portions',
+      'Filet mignon, 10 oz portions',
+      'Beef tenderloin / center-cut filet',
+      'Ribeye, 16 oz portions',
+      'Steak Sirloin Cap Strip Choice, 12 oz',
+      'Short ribs',
+      'Beef bones',
+      'Halibut portions',
+      'Sockeye salmon, 6 oz skin-on portions',
+      'Chicken breast, 7 oz portions',
+      'Pancetta',
+      'Bacon / lardons',
+      'Prosciutto, sliced'
     ]
   },
   {
     name: 'Dairy / Eggs',
     items: [
-      { item: 'Butter', par: '24 lb' },
-      { item: 'Heavy cream', par: '12 quarts' },
-      { item: 'Whole milk', par: '6 gallons' },
-      { item: 'Cheddar cheese', par: '15 lb' },
-      { item: 'Blue cheese crumbles', par: '8 lb' },
-      { item: 'Parmesan', par: '10 lb' },
-      { item: 'Eggs', par: '12 dozen' },
-      { item: 'Sour cream', par: '8 tubs' }
+      'Unsalted butter',
+      'Heavy cream',
+      'Milk',
+      'Eggs',
+      'Buttermilk',
+      'Cream cheese',
+      'Sour cream',
+      'Burrata',
+      'Crème fraîche',
+      'Shredded mozzarella',
+      'Parmesan / Parmigiano',
+      'Shredded Parmesan',
+      'Romano cheese',
+      'Gruyère',
+      'Blue cheese crumbles',
+      'Sharp cheddar',
+      'Vanilla ice cream'
     ]
   },
   {
-    name: 'Produce / Herbs',
+    name: 'Produce',
     items: [
-      { item: 'Russet potatoes', par: '4 cases' },
-      { item: 'Sweet potatoes', par: '2 cases' },
-      { item: 'Romaine lettuce', par: '3 cases' },
-      { item: 'Mixed greens', par: '2 cases' },
-      { item: 'Tomatoes', par: '2 cases' },
-      { item: 'Mushrooms', par: '20 lb' },
-      { item: 'Onions', par: '2 sacks' },
-      { item: 'Garlic', par: '5 lb' },
-      { item: 'Asparagus', par: '20 lb' },
-      { item: 'Parsley', par: '12 bunches' },
-      { item: 'Rosemary', par: '8 bunches' }
+      'Romaine hearts',
+      'Iceberg lettuce',
+      'Spring mix',
+      'Heirloom tomatoes',
+      'Glory cherry tomatoes',
+      'Radish',
+      'Fresh basil',
+      'Fresh chives',
+      'Fresh thyme',
+      'Fresh mint',
+      'Fresh tarragon',
+      'Italian parsley',
+      'Cilantro',
+      'Lemons',
+      'Limes',
+      'Oranges',
+      'Yellow onions',
+      'Red onions',
+      'Green onions',
+      'Shallots',
+      'Peeled garlic / minced garlic',
+      'Carrots',
+      'Celery',
+      'Mixed mushrooms',
+      'Leeks',
+      'Artichoke hearts',
+      'Brussels sprouts',
+      'Yukon Gold potatoes',
+      'Russet potatoes',
+      'Zucchini',
+      'Yellow squash',
+      'Asparagus',
+      'Seasonal vegetables',
+      'Bananas',
+      'Fresh raspberries',
+      'Fresh blackberries'
     ]
   },
   {
     name: 'Dry Goods / Pantry',
     items: [
-      { item: 'Kosher salt', par: '2 boxes' },
-      { item: 'Black pepper', par: '3 containers' },
-      { item: 'Steak seasoning', par: '6 containers' },
-      { item: 'Flour', par: '50 lb' },
-      { item: 'Sugar', par: '25 lb' },
-      { item: 'Rice', par: '25 lb' },
-      { item: 'Pasta', par: '4 cases' },
-      { item: 'Olive oil', par: '4 gallons' },
-      { item: 'Fryer oil', par: '6 jugs' }
+      'Mayonnaise',
+      'Dijon mustard',
+      'Honey Dijon',
+      'Worcestershire',
+      'AP flour',
+      'Panko / breadcrumbs',
+      'Puff pastry, 5" x 5" sheets',
+      'Sugar',
+      'Brown sugar',
+      'Chocolate',
+      'Walnuts',
+      'Dried cranberries',
+      'Parmesan crisps',
+      'Tomato paste',
+      'Sea salt',
+      'Kosher salt',
+      'Finishing salt',
+      'Black pepper',
+      'Cayenne pepper',
+      'Peppercorns',
+      'Old Bay seasoning',
+      'Chili flakes',
+      'Star anise',
+      'Cinnamon sticks',
+      'Bay leaves',
+      'Pickling spices',
+      'Vanilla'
     ]
   },
   {
-    name: 'Sauces / Condiments',
+    name: 'Oils / Vinegars / Liquids / Alcohol',
     items: [
-      { item: 'Worcestershire sauce', par: '4 gallons' },
-      { item: 'Steak sauce', par: '3 cases' },
-      { item: 'Ketchup', par: '3 cases' },
-      { item: 'Dijon mustard', par: '6 jars' },
-      { item: 'Mayonnaise', par: '4 gallons' },
-      { item: 'BBQ sauce', par: '3 gallons' },
-      { item: 'Hot sauce', par: '1 case' },
-      { item: 'Beef demi-glace', par: '2 cases' }
+      'Avocado oil',
+      'Extra virgin olive oil',
+      'Fry oil / beef tallow',
+      'Truffle oil',
+      'Red wine vinegar',
+      'White wine vinegar',
+      'Balsamic vinegar',
+      'Champagne vinegar',
+      'Red wine / red cooking wine',
+      'White wine',
+      'Brandy',
+      'Rum',
+      'Beef stock',
+      'Demi-glace / demi glaze',
+      'Rind Sauce',
+      'Lemon juice'
     ]
   },
   {
-    name: 'Dessert Ingredients',
+    name: 'Frozen',
     items: [
-      { item: 'Vanilla ice cream', par: '6 tubs' },
-      { item: 'Chocolate sauce', par: '4 bottles' },
-      { item: 'Cheesecake', par: '8 cakes' },
-      { item: 'Brownie mix', par: '3 cases' },
-      { item: 'Whipped cream', par: '12 cans' },
-      { item: 'Berries', par: '8 flats' }
-    ]
-  },
-  {
-    name: 'Paper / Chemicals / Supplies',
-    items: [
-      { item: 'To-go boxes', par: '4 cases' },
-      { item: 'Foil sheets', par: '2 cases' },
-      { item: 'Plastic wrap', par: '6 rolls' },
-      { item: 'Gloves - large', par: '6 boxes' },
-      { item: 'Gloves - medium', par: '6 boxes' },
-      { item: 'Sanitizer buckets tablets', par: '2 bottles' },
-      { item: 'Dish soap', par: '3 jugs' },
-      { item: 'Trash bags', par: '3 cases' }
-    ]
-  },
-  {
-    name: 'Other / Notes',
-    items: [
-      { item: 'Chef special item', par: 'As needed' },
-      { item: 'Holiday menu item', par: 'As needed' },
-      { item: 'Repair / smallwares note', par: 'As needed' }
+      'Shoestring fries'
     ]
   }
+].map((section) => ({
+  ...section,
+  items: section.items.map((item) => ({ item }))
+}));
+
+const quantityOptions = [
+  '',
+  '0',
+  ...Array.from({ length: 100 }, (_, index) => String(index + 1)),
+  '125',
+  '150',
+  '175',
+  '200',
+  '250',
+  '300',
+  '400',
+  '500',
+  'As needed'
 ];
 
 const state = {
@@ -141,6 +195,7 @@ function itemKey(sectionName, itemName) {
 
 function defaultItemState() {
   return {
+    par: '',
     onHand: '',
     orderQty: '',
     vendorNotes: '',
@@ -153,7 +208,28 @@ function getItemState(key) {
     state.items[key] = defaultItemState();
   }
 
+  state.items[key] = { ...defaultItemState(), ...state.items[key] };
   return state.items[key];
+}
+
+function populateQuantitySelect(select, selectedValue) {
+  select.innerHTML = '';
+
+  quantityOptions.forEach((optionValue) => {
+    const option = document.createElement('option');
+    option.value = optionValue;
+    option.textContent = optionValue || 'Select';
+    select.append(option);
+  });
+
+  if (selectedValue && !quantityOptions.includes(selectedValue)) {
+    const savedOption = document.createElement('option');
+    savedOption.value = selectedValue;
+    savedOption.textContent = selectedValue;
+    select.append(savedOption);
+  }
+
+  select.value = selectedValue || '';
 }
 
 function loadState() {
@@ -227,7 +303,7 @@ function renderSections() {
       const values = getItemState(key);
       const itemNode = itemTemplate.content.firstElementChild.cloneNode(true);
       const name = itemNode.querySelector('.item-name');
-      const par = itemNode.querySelector('.par-cell');
+      const par = itemNode.querySelector('.par-input');
       const parMobile = itemNode.querySelector('.item-par-mobile');
       const onHand = itemNode.querySelector('.on-hand-input');
       const orderQty = itemNode.querySelector('.order-qty-input');
@@ -238,20 +314,28 @@ function renderSections() {
       itemNode.dataset.section = section.name.toLowerCase();
       itemNode.dataset.item = item.item.toLowerCase();
       name.textContent = item.item;
-      par.textContent = item.par;
-      parMobile.textContent = `Par: ${item.par}`;
-      onHand.value = values.onHand;
-      orderQty.value = values.orderQty;
+      populateQuantitySelect(par, values.par);
+      populateQuantitySelect(onHand, values.onHand);
+      populateQuantitySelect(orderQty, values.orderQty);
+      parMobile.textContent = values.par ? `Par: ${values.par}` : 'Par: Select';
       vendorNotes.value = values.vendorNotes;
       needsOrdering.checked = values.needsOrdering;
       updateNeededClass(itemNode, values);
 
-      onHand.addEventListener('input', () => {
-        values.onHand = onHand.value;
+      par.addEventListener('change', () => {
+        values.par = par.value;
+        parMobile.textContent = values.par ? `Par: ${values.par}` : 'Par: Select';
+        updateNeededClass(itemNode, values);
         scheduleSave();
       });
 
-      orderQty.addEventListener('input', () => {
+      onHand.addEventListener('change', () => {
+        values.onHand = onHand.value;
+        updateNeededClass(itemNode, values);
+        scheduleSave();
+      });
+
+      orderQty.addEventListener('change', () => {
         values.orderQty = orderQty.value;
         updateNeededClass(itemNode, values);
         scheduleSave();
@@ -277,7 +361,9 @@ function renderSections() {
 
 function updateNeededClass(itemNode, values) {
   const hasOrderQty = values.orderQty.trim().length > 0;
+  const hasAnyCount = values.par.trim().length > 0 || values.onHand.trim().length > 0;
   itemNode.classList.toggle('is-needed', hasOrderQty || values.needsOrdering);
+  itemNode.classList.toggle('is-filled', hasAnyCount);
 }
 
 function syncHeaderInputs() {
@@ -296,7 +382,7 @@ function syncHeaderInputs() {
 }
 
 function clearAllCounts() {
-  const confirmed = window.confirm('Clear every On Hand count, Order Qty, Vendor Note, and Needs Ordering check?');
+  const confirmed = window.confirm('Clear every Par, On Hand count, Order Qty, Vendor Note, and Needs Ordering check?');
   if (!confirmed) return;
 
   Object.keys(state.items).forEach((key) => {
@@ -304,39 +390,67 @@ function clearAllCounts() {
   });
 
   document.querySelectorAll('.item-row').forEach((row) => {
+    row.querySelector('.par-input').value = '';
+    row.querySelector('.item-par-mobile').textContent = 'Par: Select';
     row.querySelector('.on-hand-input').value = '';
     row.querySelector('.order-qty-input').value = '';
     row.querySelector('.vendor-notes-input').value = '';
     row.querySelector('.needs-ordering-input').checked = false;
-    row.classList.remove('is-needed');
+    row.classList.remove('is-needed', 'is-filled');
   });
 
   saveState({ manual: true });
+  elements.textDocument.value = '';
   showToast('All counts and order notes cleared.');
 }
 
-function buildOrderLines() {
+function hasFilledInventoryValue(values) {
+  return Boolean(
+    values.par.trim()
+    || values.onHand.trim()
+    || values.orderQty.trim()
+    || values.vendorNotes.trim()
+    || values.needsOrdering
+  );
+}
+
+function formatValue(value) {
+  return value && value.trim() ? value.trim() : '-';
+}
+
+function buildTextDocument() {
   const lines = [
     'CRAZY HARRY’S STEAKHOUSE',
-    'Ingredient Order List',
+    'MASTER INGREDIENT PAR LIST ONLY',
     `Date: ${state.header.date || 'Not entered'}`,
     `Checked By: ${state.header.checkedBy || 'Not entered'}`,
     ''
   ];
+
+  let filledRows = 0;
 
   inventorySections.forEach((section) => {
     const sectionLines = [];
 
     section.items.forEach((item) => {
       const values = getItemState(itemKey(section.name, item.item));
-      const hasOrderQty = values.orderQty.trim().length > 0;
-      if (!hasOrderQty && !values.needsOrdering) return;
+      if (!hasFilledInventoryValue(values)) return;
 
-      const parts = [`- ${item.item}`];
-      if (hasOrderQty) parts.push(`Order: ${values.orderQty.trim()}`);
-      if (values.onHand) parts.push(`On hand: ${values.onHand}`);
-      if (values.vendorNotes.trim()) parts.push(`Notes: ${values.vendorNotes.trim()}`);
-      if (!hasOrderQty && values.needsOrdering) parts.push('Needs ordering');
+      filledRows += 1;
+      const parts = [
+        `- ${item.item}`,
+        `Par: ${formatValue(values.par)}`,
+        `On hand: ${formatValue(values.onHand)}`,
+        `Order: ${formatValue(values.orderQty)}`
+      ];
+
+      if (values.needsOrdering && !values.orderQty.trim()) {
+        parts.push('Needs ordering');
+      }
+      if (values.vendorNotes.trim()) {
+        parts.push(`Notes: ${values.vendorNotes.trim()}`);
+      }
+
       sectionLines.push(parts.join(' | '));
     });
 
@@ -345,23 +459,31 @@ function buildOrderLines() {
     }
   });
 
-  if (lines.length === 5) {
-    lines.push('No items selected for ordering.');
+  if (filledRows === 0) {
+    lines.push('No quantities entered yet.');
   }
 
   return lines.join('\n').trim();
 }
 
+function updateTextDocument({ announce = false } = {}) {
+  elements.textDocument.value = buildTextDocument();
+  if (announce) {
+    showToast('Text document created below.');
+  }
+}
+
 async function copyOrderList() {
-  const orderText = buildOrderLines();
+  const orderText = buildTextDocument();
+  elements.textDocument.value = orderText;
 
   try {
     await navigator.clipboard.writeText(orderText);
-    showToast('Order list copied to clipboard.');
+    showToast('Text document copied to clipboard.');
   } catch (error) {
-    const fallback = window.prompt('Copy this order list:', orderText);
+    const fallback = window.prompt('Copy this text document:', orderText);
     if (fallback !== null) {
-      showToast('Clipboard blocked. Order list shown for manual copy.');
+      showToast('Clipboard blocked. Text document shown for manual copy.');
     }
   }
 }
@@ -385,7 +507,7 @@ function exportCsv() {
         state.header.checkedBy,
         section.name,
         item.item,
-        item.par,
+        values.par,
         values.onHand,
         values.orderQty,
         values.needsOrdering ? 'Yes' : 'No',
@@ -456,10 +578,12 @@ function bindElements() {
   elements.checkedBy = document.querySelector('#checked-by');
   elements.search = document.querySelector('#ingredient-search');
   elements.clearCounts = document.querySelector('#clear-counts');
+  elements.createText = document.querySelector('#create-text');
   elements.copyOrder = document.querySelector('#copy-order');
   elements.exportCsv = document.querySelector('#export-csv');
   elements.saveProgress = document.querySelector('#save-progress');
   elements.saveStatus = document.querySelector('#save-status');
+  elements.textDocument = document.querySelector('#text-document');
   elements.toast = document.querySelector('#toast');
 }
 
@@ -472,6 +596,7 @@ function init() {
 
   elements.search.addEventListener('input', filterIngredients);
   elements.clearCounts.addEventListener('click', clearAllCounts);
+  elements.createText.addEventListener('click', () => updateTextDocument({ announce: true }));
   elements.copyOrder.addEventListener('click', copyOrderList);
   elements.exportCsv.addEventListener('click', exportCsv);
   elements.saveProgress.addEventListener('click', () => saveState({ manual: true }));
