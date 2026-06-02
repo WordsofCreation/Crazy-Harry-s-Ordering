@@ -439,66 +439,27 @@ function clearAllCounts() {
   showToast('All counts and order notes cleared.');
 }
 
-function hasFilledInventoryValue(values) {
-  return Boolean(
-    values.par.trim()
-    || values.onHand.trim()
-    || values.orderQty.trim()
-    || values.vendorNotes.trim()
-    || values.needsOrdering
-  );
-}
-
-function formatValue(value) {
-  return value && value.trim() ? value.trim() : '-';
+function formatOrderQuantity(value) {
+  return value && value.trim() ? value.trim() : 'not entered';
 }
 
 function buildTextDocument() {
-  const lines = [
-    'CRAZY HARRY’S STEAKHOUSE',
-    'INGREDIENT PAR & ORDER LIST',
-    `Date: ${state.header.date || 'Not entered'}`,
-    `Checked By: ${state.header.checkedBy || 'Not entered'}`,
-    ''
-  ];
-
-  let filledRows = 0;
+  const lines = [];
 
   inventorySections.forEach((section) => {
-    const sectionLines = [];
-
     section.items.forEach((item) => {
       const values = getItemState(itemKey(section.name, item.item));
-      if (!hasFilledInventoryValue(values)) return;
+      if (!values.needsOrdering) return;
 
-      filledRows += 1;
-      const parts = [
-        `- ${item.item}`,
-        `Par: ${formatValue(values.par)}`,
-        `On hand: ${formatValue(values.onHand)}`,
-        `Order: ${formatValue(values.orderQty)}`
-      ];
-
-      if (values.needsOrdering && !values.orderQty.trim()) {
-        parts.push('Needs ordering');
-      }
-      if (values.vendorNotes.trim()) {
-        parts.push(`Notes: ${values.vendorNotes.trim()}`);
-      }
-
-      sectionLines.push(parts.join(' | '));
+      lines.push(`- ${item.item}: ${formatOrderQuantity(values.orderQty)}`);
     });
-
-    if (sectionLines.length > 0) {
-      lines.push(section.name, ...sectionLines, '');
-    }
   });
 
-  if (filledRows === 0) {
-    lines.push('No quantities entered yet.');
+  if (lines.length === 0) {
+    lines.push('No items marked as needing ordering.');
   }
 
-  return lines.join('\n').trim();
+  return lines.join('\n');
 }
 
 function updateTextDocument({ announce = false } = {}) {
