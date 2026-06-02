@@ -28,19 +28,32 @@ Then open:
 http://localhost:8000
 ```
 
-## GitHub Pages Setup
+## Deployment
 
-1. Push these files to a GitHub repository.
+This project is ready to deploy as a static website. There is no build step: `index.html`, `styles.css`, `app.js`, `manifest.json`, `service-worker.js`, and `icon.svg` are served directly from the repository root.
+
+### GitHub Pages
+
+A GitHub Actions workflow is included at `.github/workflows/deploy.yml`. To publish the site:
+
+1. Push the repository to GitHub on the `main` branch.
 2. In GitHub, go to **Settings** → **Pages**.
-3. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-4. Select the branch that contains the app, usually `main`, and choose the repository root `/` as the folder.
-5. Click **Save**.
-6. After GitHub Pages finishes deploying, open the provided Pages URL on a phone.
-7. Use the browser share/menu option and choose **Add to Home Screen** to install the PWA.
+3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+4. Push to `main` or run the **Deploy static site to GitHub Pages** workflow manually from the **Actions** tab.
+5. After the workflow finishes, open the provided Pages URL on a phone.
+6. Use the browser share/menu option and choose **Add to Home Screen** to install the PWA.
+
+The `.nojekyll` file is included so GitHub Pages serves every static asset exactly as checked in.
+
+### Other Static Hosts
+
+The app can also be deployed to static hosts such as Netlify, Vercel, Cloudflare Pages, or any basic web server. Use the repository root as the publish directory and leave the build command blank.
 
 ## File Structure
 
 ```text
+.github/workflows/deploy.yml  # GitHub Pages deployment workflow
+.nojekyll           # Ensures GitHub Pages serves static files without Jekyll processing
 index.html          # App markup and templates
 styles.css          # Mobile-first steakhouse clipboard styling
 app.js              # Inventory data, localStorage, copy, CSV, search, and PWA registration
