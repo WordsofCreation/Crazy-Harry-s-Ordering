@@ -525,19 +525,25 @@ function syncHeaderInputs() {
   });
 }
 
+function clearedCountState(values) {
+  return {
+    ...defaultItemState(),
+    par: values.par,
+    vendorNotes: values.vendorNotes
+  };
+}
+
 function clearAllCounts() {
-  const confirmed = window.confirm('Clear every Par, On Hand count, Order Qty, Vendor Note, and Needs Ordering check?');
+  const confirmed = window.confirm('Clear On Hand counts, Order Qty, and Needs Ordering checks? Saved Pars and Vendor Notes will stay locked.');
   if (!confirmed) return;
 
   Object.keys(state.items).forEach((key) => {
-    state.items[key] = defaultItemState();
+    state.items[key] = clearedCountState(getItemState(key));
   });
 
   document.querySelectorAll('.item-row').forEach((row) => {
-    row.querySelector('.par-input').value = '';
-    row.querySelector('.item-par-mobile').textContent = 'Par: Select';
-    row.querySelector('.par-selected').textContent = 'No par selected';
-    row.querySelector('.par-selected').classList.remove('has-selection');
+    const values = getItemState(row.dataset.key);
+
     row.querySelector('.on-hand-input').value = '';
     row.querySelector('.on-hand-selected').textContent = 'No count selected';
     row.querySelector('.on-hand-selected').classList.remove('has-selection');
@@ -545,14 +551,13 @@ function clearAllCounts() {
     row.querySelector('.order-qty-selected').textContent = 'No order selected';
     row.querySelector('.order-qty-selected').classList.remove('has-selection');
     row.querySelector('.item-order-print').textContent = orderPrintText('');
-    row.querySelector('.vendor-notes-input').value = '';
     row.querySelector('.needs-ordering-input').checked = false;
-    row.classList.remove('is-needed', 'is-filled');
+    updateNeededClass(row, values);
   });
 
   saveState({ manual: true });
   elements.textDocument.value = '';
-  showToast('All counts and order notes cleared.');
+  showToast('Counts and order selections cleared. Pars and vendor notes were kept.');
 }
 
 function formatOrderQuantity(value) {

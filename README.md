@@ -66,5 +66,5 @@ README.md           # Setup and usage instructions
 ## Notes for Kitchen Use
 
 - Progress is stored in the browser on the current device. Clearing browser site data will clear saved counts.
-- Use **Clear All Counts** after confirming an order or when starting a fresh inventory cycle.
+- Use **Clear All Counts** after confirming an order or when starting a fresh inventory cycle. This clears the daily on-hand counts, order quantities, and ordering checks while keeping saved pars and vendor notes/pack-size details.
 - The text document includes only rows with the `Needs Ordering` checkbox selected, formatted as the item name followed by `Order: quantity`.
