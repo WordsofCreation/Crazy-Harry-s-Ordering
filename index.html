@@ -50,6 +50,7 @@
         <button type="button" id="clear-counts" class="button button--danger">Clear All Counts</button>
         <button type="button" id="create-text" class="button button--primary">Create Text Document</button>
         <button type="button" id="copy-order" class="button button--secondary">Copy Text</button>
+        <button type="button" id="export-text" class="button button--secondary">Export Text</button>
         <button type="button" id="export-csv" class="button button--secondary">Export CSV</button>
         <button type="button" id="save-progress" class="button button--secondary">Save Progress</button>
       </div>
@@ -91,14 +92,17 @@
       <label class="item-cell input-cell par-cell">
         <span class="mobile-label">Par</span>
         <select class="touch-input compact-input quantity-select par-input" aria-label="Par quantity"></select>
+        <span class="selected-value par-selected" aria-live="polite">No par selected</span>
       </label>
       <label class="item-cell input-cell">
         <span class="mobile-label">On Hand</span>
         <select class="touch-input compact-input quantity-select on-hand-input" aria-label="On hand count"></select>
+        <span class="selected-value on-hand-selected" aria-live="polite">No count selected</span>
       </label>
       <label class="item-cell input-cell">
         <span class="mobile-label">Order Qty</span>
         <select class="touch-input compact-input quantity-select order-qty-input" aria-label="Order quantity"></select>
+        <span class="selected-value order-qty-selected" aria-live="polite">No order selected</span>
       </label>
       <label class="item-cell notes-cell">
         <span class="mobile-label">Vendor Notes</span>

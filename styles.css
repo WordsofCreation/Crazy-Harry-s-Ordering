@@ -326,6 +326,26 @@ h2 {
   min-height: 46px;
 }
 
+.selected-value {
+  background: var(--paper-dark);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  padding: 0.28rem 0.55rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.selected-value.has-selection {
+  background: #e4f2e8;
+  border-color: #aacbb5;
+  color: var(--green);
+}
+
 .vendor-notes-input {
   min-height: 70px;
   resize: vertical;
@@ -393,7 +413,7 @@ h2 {
   }
 
   .action-bar {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .table-heading,
