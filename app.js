@@ -343,6 +343,14 @@ function orderPrintText(value) {
   return `Order: ${formatOrderQuantity(value)}`;
 }
 
+function hasOrderQuantity(value) {
+  return Boolean(value && value.trim());
+}
+
+function isOrderItem(values) {
+  return Boolean(values.needsOrdering || hasOrderQuantity(values.orderQty));
+}
+
 function updateSelectedValue(labelNode, label, value, emptyText) {
   labelNode.textContent = selectedValueText(label, value, emptyText);
   labelNode.classList.toggle('has-selection', Boolean(value && value.trim()));
@@ -475,6 +483,10 @@ function renderSections() {
 
       orderQty.addEventListener('change', () => {
         values.orderQty = orderQty.value;
+        if (hasOrderQuantity(values.orderQty)) {
+          values.needsOrdering = true;
+          needsOrdering.checked = true;
+        }
         updateSelectedValue(orderQtySelected, 'Order selected', values.orderQty, 'No order selected');
         orderPrint.textContent = orderPrintText(values.orderQty);
         updateNeededClass(itemNode, values);
@@ -505,9 +517,8 @@ function renderSections() {
 }
 
 function updateNeededClass(itemNode, values) {
-  const hasOrderQty = values.orderQty.trim().length > 0;
   const hasAnyCount = values.par.trim().length > 0 || values.onHand.trim().length > 0;
-  itemNode.classList.toggle('is-needed', hasOrderQty || values.needsOrdering);
+  itemNode.classList.toggle('is-needed', isOrderItem(values));
   itemNode.classList.toggle('is-filled', hasAnyCount);
 }
 
@@ -590,7 +601,7 @@ function buildTextDocument() {
   getActiveSections().forEach((section) => {
     section.items.forEach((item) => {
       const values = getItemState(itemKey(section.name, item.item));
-      if (!values.needsOrdering) return;
+      if (!isOrderItem(values)) return;
 
       lines.push(`- ${item.item} Order: ${formatOrderQuantityForItem(item.item, values.orderQty)}`);
     });
@@ -603,12 +614,38 @@ function buildTextDocument() {
   return lines.join('\n');
 }
 
+function buildPrintDocument() {
+  const headerLines = [
+    'CRAZY HARRY’S STEAKHOUSE ORDER LIST',
+    `Date: ${state.header.date || new Date().toISOString().slice(0, 10)}`
+  ];
+
+  if (state.header.checkedBy && state.header.checkedBy.trim()) {
+    headerLines.push(`Checked By: ${state.header.checkedBy.trim()}`);
+  }
+
+  return `${headerLines.join('\n')}\n\n${buildTextDocument()}`;
+}
+
+function updatePrintDocument() {
+  if (elements.printOrderDocument) {
+    elements.printOrderDocument.textContent = buildPrintDocument();
+  }
+}
+
 function updateTextDocument({ announce = false } = {}) {
   textDocumentIsLive = true;
   elements.textDocument.value = buildTextDocument();
+  updatePrintDocument();
   if (announce) {
     showToast('Text document created below. It will update as you make changes.');
   }
+}
+
+function printOrderList() {
+  updateTextDocument();
+  updatePrintDocument();
+  window.print();
 }
 
 async function copyOrderList() {
@@ -657,7 +694,7 @@ function exportText() {
 
 function exportCsv() {
   const rows = [
-    ['Business', 'Date', 'Checked By', 'Section', 'Item', 'Par', 'On Hand', 'Order Qty', 'Needs Ordering', 'Vendor Notes']
+    ['Business', 'Date', 'Checked By', 'Section', 'Item', 'Par', 'On Hand', 'Order Qty', 'Needs Ordering', 'Order Message', 'Vendor Notes']
   ];
 
   getActiveSections().forEach((section) => {
@@ -672,7 +709,8 @@ function exportCsv() {
         values.par,
         values.onHand,
         formatOrderQuantityForItem(item.item, values.orderQty),
-        values.needsOrdering ? 'Yes' : 'No',
+        isOrderItem(values) ? 'Yes' : 'No',
+        isOrderItem(values) ? `${item.item} Order: ${formatOrderQuantityForItem(item.item, values.orderQty)}` : '',
         values.vendorNotes
       ]);
     });
@@ -808,9 +846,11 @@ function bindElements() {
   elements.copyOrder = document.querySelector('#copy-order');
   elements.exportText = document.querySelector('#export-text');
   elements.exportCsv = document.querySelector('#export-csv');
+  elements.printOrder = document.querySelector('#print-order');
   elements.saveProgress = document.querySelector('#save-progress');
   elements.saveStatus = document.querySelector('#save-status');
   elements.textDocument = document.querySelector('#text-document');
+  elements.printOrderDocument = document.querySelector('#print-order-document');
   elements.itemSectionSelect = document.querySelector('#item-section-select');
   elements.newItemName = document.querySelector('#new-item-name');
   elements.addItemForm = document.querySelector('#add-item-form');
@@ -832,6 +872,7 @@ function init() {
   elements.copyOrder.addEventListener('click', copyOrderList);
   elements.exportText.addEventListener('click', exportText);
   elements.exportCsv.addEventListener('click', exportCsv);
+  elements.printOrder.addEventListener('click', printOrderList);
   elements.saveProgress.addEventListener('click', () => saveState({ manual: true }));
 }
 

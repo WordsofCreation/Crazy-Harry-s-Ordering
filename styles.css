@@ -618,3 +618,33 @@ h2 {
     display: none;
   }
 }
+
+.print-order-summary {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .hero,
+  .app-shell,
+  .toast {
+    display: none !important;
+  }
+
+  .print-order-summary {
+    display: block;
+    font-family: Arial, sans-serif;
+    padding: 0.5in;
+  }
+
+  .print-order-summary pre {
+    font-family: Arial, sans-serif;
+    font-size: 13pt;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+}

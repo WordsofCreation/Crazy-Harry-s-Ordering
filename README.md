@@ -9,8 +9,9 @@ A mobile-first Progressive Web App (PWA) for Crazy Harry’s Steakhouse. Chefs c
 - Dropdown `Par`, `On Hand`, and `Order Qty` fields for every ingredient.
 - Optional `Vendor Notes` field and `Needs Ordering` checkbox for quick item selection.
 - Search/filter box for ingredients or section names.
-- `Create Text Document` builds a copy-ready text message/email draft with only checked `Needs Ordering` items and their order quantities, keeps that draft updated as order selections change, and `Copy Text` copies it to the clipboard.
-- `Export CSV` downloads the full worksheet.
+- `Create Text Document` builds a copy-ready text message/email draft with checked `Needs Ordering` items and any item with an entered `Order Qty`, keeps that draft updated as order selections change, and `Copy Text` copies it to the clipboard.
+- `Export CSV` downloads the full worksheet with an order-message column for selected order items.
+- `Print Order` opens the browser print screen with the current order list.
 - `Save Progress` plus autosave to `localStorage` so counts remain on the same phone/browser.
 - Installable PWA with `manifest.json` and `service-worker.js` for home-screen use and offline loading after the first visit.
 
@@ -67,4 +68,4 @@ README.md           # Setup and usage instructions
 
 - Progress is stored in the browser on the current device. Clearing browser site data will clear saved counts.
 - Use **Clear All Counts** after confirming an order or when starting a fresh inventory cycle. This clears the daily on-hand counts, order quantities, and ordering checks while keeping saved pars and vendor notes/pack-size details.
-- The text document includes only rows with the `Needs Ordering` checkbox selected, formatted as the item name followed by `Order: quantity`.
+- The text document and printout include rows with the `Needs Ordering` checkbox selected, plus rows where an `Order Qty` was entered, formatted as the item name followed by `Order: quantity`.
