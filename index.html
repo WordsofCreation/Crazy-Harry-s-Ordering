@@ -72,16 +72,21 @@
         <button type="button" id="copy-order" class="button button--secondary">Copy Text</button>
         <button type="button" id="export-text" class="button button--secondary">Export Text</button>
         <button type="button" id="export-csv" class="button button--secondary">Export CSV</button>
+        <button type="button" id="print-order" class="button button--secondary">Print Order</button>
         <button type="button" id="save-progress" class="button button--secondary">Save Progress</button>
       </div>
       <label class="field-label text-document-label" for="text-document">
         Text Message / Email Document
-        <textarea id="text-document" class="touch-input text-document-output" rows="10" readonly placeholder="Tap Create Text Document to list only checked items and order quantities."></textarea>
+        <textarea id="text-document" class="touch-input text-document-output" rows="10" readonly placeholder="Tap Create Text Document to list checked items and entered order quantities."></textarea>
       </label>
     </section>
 
     <section id="sections-container" class="sections-stack" aria-label="Ingredient par list"></section>
   </main>
+
+  <section id="print-order-summary" class="print-order-summary" aria-hidden="true">
+    <pre id="print-order-document"></pre>
+  </section>
 
   <template id="section-template">
     <article class="clipboard-card ingredient-section">

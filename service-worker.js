@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crazy-harry-par-list-v6';
+const CACHE_NAME = 'crazy-harry-par-list-v7';
 const APP_ASSETS = [
   './',
   './index.html',
